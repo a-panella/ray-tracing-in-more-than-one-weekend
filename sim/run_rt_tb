@@ -1,0 +1,25 @@
+#!/bin/python3
+
+from vunit import VUnit
+
+# Create VUnit instance by parsing command line arguments
+vu = VUnit.from_argv()
+
+# Create library 'lib'
+rt = vu.add_library("rt")
+
+# Add all files ending in .vhd in current working directory to library
+rt.add_source_files("../src/rt_base_context.vhd")
+rt.add_source_files("../src/rt_context.vhd")
+rt.add_source_files("../src/src_pkg.vhd")
+rt.add_source_files("sim_pkg.vhd")
+# rt.add_source_files("rt_sim_context.vhd")
+
+rt.add_source_files("rt_tb.vhd")
+
+
+vu.add_compile_option("ghdl.a_flags", ["--std=08", "--ieee=synopsys", "-frelaxed", "-fexplicit"])
+vu.set_sim_option("ghdl.elab_flags", ["-fsynopsys","-frelaxed"])
+vu.set_sim_option("ghdl.sim_flags", ["--max-stack-alloc=512"])
+
+vu.main()
